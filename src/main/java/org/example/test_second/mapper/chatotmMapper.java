@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.example.test_second.pojo.table.account;
 import org.example.test_second.pojo.table.chatotm;
 import org.example.test_second.pojo.table.comments;
 
@@ -41,4 +42,16 @@ public interface chatotmMapper extends BaseMapper<chatotm> {
 
     @Update("UPDATE comments SET favor = favor - 1 WHERE uid = #{uid} and cid = #{cid}")
     Integer decreasecommentfavor(Integer uid, Integer cid);
+
+    @Select("select * from account where id = #{subId}")
+    account insertelseinformation(Integer subId);
+
+    @Insert("insert into chatotm (nickname, fileData) values (#{nickname}, #{fileData})")
+    void insertelsemessage(String nickname, String fileData);
+
+    @Insert("insert into comments (nickname, fileData) values (#{nickname}, #{fileData})")
+    void insertcommentelsemessage(String nickname, String fileData);
+
+    @Update("UPDATE chatotm SET countcomment = countcomment + 1 WHERE uid = #{uid}")
+    void commentsaddone(Integer uid);
 }

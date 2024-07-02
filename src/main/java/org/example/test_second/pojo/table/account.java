@@ -53,7 +53,7 @@ public class account implements Serializable {
     private String interests;
     @Lob
     @ApiModelProperty(value = "头像")
-    private byte[] fileData;
+    private String fileData;
 
 
 

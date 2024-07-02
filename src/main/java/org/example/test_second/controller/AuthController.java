@@ -124,6 +124,9 @@ public class AuthController {
     @PostMapping("/uploadImage")
     @ApiOperation("上传图片")
     public String uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("studentId") String studentId) {
+//    public String uploadImage(@RequestBody uploadImage uploadimage) {
+//        MultipartFile file = uploadimage.getFile();
+//        String studentId = uploadimage.getStudentId();
         if (file.isEmpty()) {
             return "Image file is empty";
         }
@@ -131,7 +134,8 @@ public class AuthController {
         try {
             byte[] bytes = file.getBytes();
             String filename = file.getOriginalFilename();
-            File destinationFile = new File("C:\\Users\\王旭博\\Desktop\\test_one\\picture\\", filename); // 指定存储路径
+            File destinationFile = new File("C:\\Users\\王旭博\\Desktop\\test_one\\picture\\", filename+".png"); // 指定存储路径
+            System.out.println(filename);
 
             // 确保目录存在
             if (!destinationFile.getParentFile().exists()) {
@@ -162,6 +166,7 @@ public class AuthController {
             System.out.println(filePath);
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists() || resource.isReadable()) {
+                System.out.println(resource);
                 return ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType("image/png")) // 注意根据实际图片类型修改
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
@@ -173,6 +178,8 @@ public class AuthController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+//    @PostMapping("/")
 
 
 

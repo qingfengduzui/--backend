@@ -82,3 +82,4 @@ public interface accountMapper extends BaseMapper<account> {
     @Select("select education from account where studentId = #{studentid};")
     String geteducationbystudentid(String studentid);
 }
+

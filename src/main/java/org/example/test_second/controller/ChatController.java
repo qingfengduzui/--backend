@@ -8,6 +8,7 @@ import org.example.test_second.mapper.chatotmMapper;
 import org.example.test_second.pojo.commentfavor;
 import org.example.test_second.pojo.result;
 import org.example.test_second.pojo.table.Chat;
+import org.example.test_second.pojo.table.account;
 import org.example.test_second.pojo.table.chatotm;
 import org.example.test_second.pojo.table.comments;
 import org.example.test_second.pojo.textFavor;
@@ -51,6 +52,11 @@ public class ChatController {
     public ResultTest testMessage(@RequestParam(name = "message", required = false, defaultValue = "World") String message, String id){
         //数据插入表
         chatotmmapper.insertmessage(message, id);
+        Integer subId = Integer.parseInt(id);
+        account elseinformation = chatotmmapper.insertelseinformation(subId);
+        String nickname = elseinformation.getNickName();
+        String fileData = elseinformation.getFileData();
+        chatotmmapper.insertelsemessage(nickname,fileData);
         //发送实时单条信息
         webSocket.sendAllMessage(message, id);
         return ResultTest.success();
@@ -91,8 +97,14 @@ public class ChatController {
     public ResultTest commentMessage(@RequestParam(name = "comment", required = false, defaultValue = "World") String comment, Integer uid, Integer rid, Integer rcid){
         //数据插入表
         chatotmmapper.insertcommentmessage(comment,uid,rid,rcid);
+        Integer subId = rid;
+        account elseinformation = chatotmmapper.insertelseinformation(subId);
+        String nickname = elseinformation.getNickName();
+        String fileData = elseinformation.getFileData();
+        chatotmmapper.insertcommentelsemessage(nickname,fileData);
         //发送实时单条信息
         webSocket.sendAllMessage(comment, uid, rid, rcid);
+        chatotmmapper.commentsaddone(uid);
         return ResultTest.success();
     }
 
@@ -133,9 +145,9 @@ public class ChatController {
         return chatService.getmessage();
     }
 
-    @PostMapping("/gettextmessage")
+    @GetMapping("/gettextmessage")
     @ApiOperation("获取发帖对应评论内容")
-    public List<comments> gettextmessage(Integer uid)
+    public List<comments> gettextmessage(@RequestParam("uid") Integer uid)
     {
         return chatService.gettextmessage(uid);
     }

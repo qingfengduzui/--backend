@@ -5,12 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.util.Span;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.InputStream;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Slf4j
@@ -20,19 +24,20 @@ import java.io.InputStream;
 public class NlpController {
 
     @GetMapping("/test")
-    public void performNlpTask() {
-       try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream("en-sent.bin");
+    public ResponseEntity<?> performNlpTask(@RequestParam(name = "text", required = false, defaultValue = "Hello World. This is a test sentence.") String text) {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("en-sent.bin")) {
             SentenceModel model = new SentenceModel(is);
             SentenceDetectorME sentenceDetector = new SentenceDetectorME(model);
-            String text = "Hello World. This is a test sentence.";
             Span[] spans = sentenceDetector.sentPosDetect(text);
+            List<String> sentences = new ArrayList<>();
             for (Span span : spans) {
-                System.out.println(text.substring(span.getStart(), span.getEnd()));
+                sentences.add(text.substring(span.getStart(), span.getEnd()));
             }
-       } catch (Exception e) {
-        e.printStackTrace();
-       }
+            return ResponseEntity.ok(sentences);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing the text");
+        }
     }
 
 }
