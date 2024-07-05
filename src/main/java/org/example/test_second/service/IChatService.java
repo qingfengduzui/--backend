@@ -10,4 +10,6 @@ public interface IChatService {
     List<chatotm> getmessage();
 
     List<comments> gettextmessage(Integer uid);
+
+    List<chatotm> getGoodsListByFilter(String keyword);
 }

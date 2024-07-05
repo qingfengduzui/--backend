@@ -55,6 +55,8 @@ public class account implements Serializable {
     @ApiModelProperty(value = "头像")
     private String fileData;
 
+    private String academy;
+
 
 
 }

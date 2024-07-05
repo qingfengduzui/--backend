@@ -123,8 +123,9 @@ public class AuthServiceImpl implements IAuthService {
             String education = updateaccount.getEducation();
             String dormitory = updateaccount.getDormitory();
             String interests = updateaccount.getInterests();
+            String academy = updateaccount.getAcademy();
 
-            Integer i  = accountmapper.update(studentid,name,phone,nickname,country,province,city,gender,political,education,dormitory,interests);
+            Integer i  = accountmapper.update(studentid,name,phone,nickname,country,province,city,gender,political,education,dormitory,interests,academy);
             System.out.println(i);
             if(i > 0){
                 res.setStatus(true);
@@ -265,7 +266,7 @@ public class AuthServiceImpl implements IAuthService {
                 res.setStatus(false);
                 res.setResult("用户不存在");
                 return res;
-            } else if (!account1.getPhone().equals("-1")) {
+            } else if (account1.getPhone().equals("1")) {
                 System.out.println(account1.getPhone());
                 res.setStatus(false);
                 res.setResult("用户已注册");
@@ -349,5 +350,29 @@ public class AuthServiceImpl implements IAuthService {
             res.setResult("异常: " + e.getMessage());
             return res;
         }
+    }
+
+    @Override
+    public result getAllByStudentid(Integer id) {
+        result res = new result();
+        try {
+            account account1 = accountmapper.getAllByStudentid(id);
+            res.setStatus(true);
+            res.setResult(account1);
+            return res;
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.setStatus(false);
+            res.setResult("异常: " + e.getMessage());
+            return res;
+        }
+    }
+
+    @Override
+    public Integer getuserfavor(Integer id) {
+        Integer textfavor = accountmapper.getnumtext(id);
+        Integer commentfavor = accountmapper.getnumcomment(id);
+        Integer sumfavor = textfavor+commentfavor;
+        return sumfavor;
     }
 }

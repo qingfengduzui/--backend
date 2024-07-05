@@ -1,5 +1,6 @@
 package org.example.test_second.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.example.test_second.mapper.chatotmMapper;
 import org.example.test_second.pojo.result;
 import org.example.test_second.pojo.table.chatotm;
@@ -27,5 +28,12 @@ public class ChatServiceImpl implements IChatService {
     public List<comments> gettextmessage(Integer uid) {
         List<comments> textmessage = chatotmmapper.gettextmessage(uid);
         return textmessage;
+    }
+
+    @Override
+    public List<chatotm> getGoodsListByFilter(String filter) {
+        QueryWrapper<chatotm> wrapper = new QueryWrapper<>();
+        wrapper.like("message", filter);
+        return chatotmmapper.selectList(wrapper);
     }
 }

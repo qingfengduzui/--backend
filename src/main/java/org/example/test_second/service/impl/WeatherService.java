@@ -15,7 +15,7 @@ import java.util.Map;
 public class WeatherService {
 
     public ResponseEntity<?> getWeatherInfo() {
-        String host = "http://tianqi3.market.alicloudapi.com";
+        String host = "https://ali-weather.showapi.com";
         String path = "/hour24";
         String method = "GET";
         String appcode = "591be83713e54f649c3d63248cc17a39";

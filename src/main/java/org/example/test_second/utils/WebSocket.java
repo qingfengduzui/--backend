@@ -90,6 +90,32 @@ public class WebSocket {
         }
     }
 
+    public void sendAllMessage(String zh_message) {
+        log.info("【websocket消息】广播消息:"+zh_message);
+        for(WebSocket webSocket : webSockets) {
+            try {
+                if(webSocket.session.isOpen()) {
+                    webSocket.session.getAsyncRemote().sendText(zh_message);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void sendAllMessage() {
+        log.info("【websocket消息】广播消息:"+"更新");
+        for(WebSocket webSocket : webSockets) {
+            try {
+                if(webSocket.session.isOpen()) {
+                    webSocket.session.getAsyncRemote().sendText("更新");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
     // 此为单点消息

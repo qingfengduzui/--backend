@@ -28,4 +28,8 @@ public interface IAuthService {
     result updatepassword(updatepassword updatepassword);
 
     result sendverficationpassword(verficationCode verficationCode);
+
+    result getAllByStudentid(Integer id);
+
+    Integer getuserfavor(Integer id);
 }

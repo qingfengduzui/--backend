@@ -35,4 +35,6 @@ public class updateAccount {
 
     private Date birthday;
 
+    private String academy;
+
 }
